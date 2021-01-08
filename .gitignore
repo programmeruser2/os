@@ -1,0 +1,7 @@
+*.o
+kernel.bin
+os.iso
+iso/
+*.DS_Store
+*.save
+serial.log
