@@ -77,17 +77,15 @@ void idt_initialize(void) {
 
 	//remapping the PIC
 	outb(PIC_MASTER_COMMAND_PORT, 0x11);
-	outb(PIC_SLAVE_COMMAND_PORT, 0xA1);
-	outb(PIC_MASTER_COMMAND_PORT, 0x11);
-	outb(PIC_SLAVE_COMMAND_PORT, 0x11);
-	outb(PIC_MASTER_DATA_PORT, 0x20);
-	outb(PIC_SLAVE_DATA_PORT, 0x28);
-	outb(PIC_MASTER_DATA_PORT, 0x04);
-	outb(PIC_SLAVE_DATA_PORT, 0x02);
-	outb(PIC_MASTER_DATA_PORT, 0x01);
-	outb(PIC_SLAVE_DATA_PORT, 0x01);
-	outb(PIC_MASTER_DATA_PORT, 0x0);
-	outb(PIC_SLAVE_DATA_PORT, 0x0);
+        outb(PIC_SLAVE_COMMAND_PORT, 0x11);
+        outb(PIC_MASTER_DATA_PORT, 0x20);
+        outb(PIC_SLAVE_DATA_PORT, 40);
+        outb(0x21, 0x04);
+        outb(PIC_SLAVE_DATA_PORT, 0x02);
+        outb(0x21, 0x01);
+        outb(PIC_SLAVE_DATA_PORT, 0x01);
+        outb(0x21, 0x0);
+        outb(PIC_SLAVE_DATA_PORT, 0x0);
 
 	DEFINE_IDT_ENTRY(0);
 	DEFINE_IDT_ENTRY(1);
