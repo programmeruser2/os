@@ -22,7 +22,7 @@ void create_idt_entry(struct idt_entry_t* idt_entry_ptr, uint32_t base, uint16_t
 }
 void idt_initialize(void) {
 	#define DEFINE_IDT_ENTRY(n) create_idt_entry(&idt_entries[n], (uint32_t) isr##n, 0x08, 0x8E)
-	#define DEFINE_IRQ_ENTRY(n, i) create_idt_entry(&idt_entries[i], (uint32_t) isr##n, 0x08, 0x8E)
+	#define DEFINE_IRQ_ENTRY(n, i) create_idt_entry(&idt_entries[i], (uint32_t) irq##n, 0x08, 0x8E)
 	idt_ptr.limit = sizeof(struct idt_entry_t) * 256 - 1;
 	idt_ptr.base = (uint32_t) &idt_entries;
 	extern void isr0(void);
