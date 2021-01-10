@@ -22,4 +22,7 @@ void timer_initialize(size_t frequency, void (*callback)(size_t)) {
 	//divisor has to be sent bytewise
 	outb(0x40, (uint8_t) (divisor & 0xFF));
 	outb(0x40, (uint8_t) ((divisor >> 8) & 0xFF));
+
+	//set callback
+	timer_set_callback = callback;
 }
