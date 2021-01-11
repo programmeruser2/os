@@ -11,7 +11,7 @@ void timer_irq_callback(struct registers_t* regs) {
 	timer_set_callback(timer_tick);
 }
 void timer_initialize(size_t frequency, void (*callback)(size_t)) {
-	register_interrupt_handler(IRQ0, &timer_irq_callback);
+	register_interrupt_handler(IRQ0, timer_irq_callback);
 
 	//sent value is the value that the input clock (1193180 Hz) by
 	size_t divisor =  1193180 / frequency;

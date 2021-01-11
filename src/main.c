@@ -16,6 +16,6 @@ void kernel_main(void) {
 	//enable interrupts
 	asm volatile("sti");
 	terminal_write_line("Starting timer...");
-	timer_initialize(50, &timer_callback); //initialize timer to 50 Hz
+	timer_initialize(50, timer_callback); //initialize timer to 50 Hz
 	for(;;) asm volatile("hlt");
 }
