@@ -1,5 +1,5 @@
 *.o
-kernel.bin
+*.bin
 os.iso
 iso/
 *.DS_Store
