@@ -1,3 +1,4 @@
+CC = i686-elf-gcc
 C_SRC = $(wildcard src/*.c)
 ASM = $(wildcard src/*.asm)
 OBJS = $(patsubst src/%.c,%.o,$(C_SRC)) $(patsubst src/%.asm,%.o,$(ASM))
@@ -15,6 +16,6 @@ kernel.bin: $(OBJS)
 %.o: src/%.asm
 	nasm -f elf32 $< -o $@ 
 %.o: src/%.c
-	i686-elf-gcc -c $^ -nostdlib -ffreestanding -O2 -g # debug symbols 
+	$(CC) -c $^ -nostdlib -ffreestanding -O2 -g # debug symbols 
 clean:
 	rm *.o
