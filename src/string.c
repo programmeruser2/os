@@ -10,6 +10,7 @@ char* strcat(char* str1, char* str2) {
 	for (int i = 0; i < strlen(str2); ++i) {
 		str1[base + i] = str2[i];
 	}
+	return str1;
 }
 char* string_reverse(char* str) {
         size_t len = strlen(str);
@@ -18,8 +19,10 @@ char* string_reverse(char* str) {
                 str[i] = str[len - i - 1];
                 str[len - i - 1] = tmp;
         }
+	return str;
 }
 char* itoa(int num, char* str) {
+	//K&R implementation
         int i, sign;
         if ((sign = num) < 0) num = -num; //check sign and change if needed
         i = 0;
@@ -27,6 +30,7 @@ char* itoa(int num, char* str) {
                 str[i++] = num % 10 + '0';
         }  while ((num /= 10) > 0); //keep going while above zero
         if (sign < 0) str[i++] = '-'; //add sign
-        string_reverse(str); //reverse
         str[i] = '\0'; //add null terminator
+	string_reverse(str); //reverse string
+	return str;
 }
