@@ -5,6 +5,7 @@
 #include <stddef.h>
 void timer_callback(size_t tick) {
 	terminal_write_int((int) tick);
+	terminal_write_line("");
 }
 void kernel_main(void) {
 	terminal_initialize();
