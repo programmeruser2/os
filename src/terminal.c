@@ -66,6 +66,9 @@ void terminal_scroll(size_t times) {
 			terminal_buffer[index] = vga_entry(' ', terminal_color); 
 		}
         }
+	//change position
+	terminal_row = VGA_HEIGHT - times;
+	terminal_set_cursor_pos(terminal_column, terminal_row);
 }
 void terminal_putchar(char c) {
 	if (c == '\r') {
