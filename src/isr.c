@@ -39,18 +39,21 @@ char* exception_messages[] = {
 	"Reserved",
 	"Reserved"
 };
+isr_t interrupt_handlers[256];
 void isr_handler(struct registers_t* regs) {
 	terminal_write_string("Recieved interrupt: ");
 	terminal_write_int(regs->int_number);
 	terminal_write_line("");
-	terminal_write_line(exception_messages[regs->int_number]);
-	terminal_write_line("Exception recieved. System halted.");
-	//halt the processor
-	for(;;) asm volatile("hlt");
+	if (interrupt_handlers[regs->int_number] != NULL) {
+		isr_t handler = interrupt_handlers[regs->int_number];
+		handler(regs);
+	} else {
+		terminal_write_line(exception_messages[regs->int_number]);
+		terminal_write_line("Exception recieved. System halted.");
+		//halt the processor
+		for(;;) asm volatile("hlt");
+	}
 }
-
-//IRQs
-isr_t interrupt_handlers[256];
 
 void register_interrupt_handler(uint8_t n, isr_t handler) {
 	interrupt_handlers[n] = handler;
