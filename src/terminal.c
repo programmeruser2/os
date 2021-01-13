@@ -62,7 +62,7 @@ void terminal_scroll(size_t times) {
 			} 
                 }
 		for (size_t x = 0; x < VGA_WIDTH; ++x) {
-			const size_t index = (VGA_HEIGHT - 1) * VGA_WIDTH + x;
+			const size_t index = (VGA_HEIGHT - (i + 1)) * VGA_WIDTH + x;
 			terminal_buffer[index] = vga_entry(' ', terminal_color); 
 		}
         }
