@@ -56,8 +56,8 @@ void terminal_putentryat(char c, uint8_t color, size_t x, size_t y) {
 }
 void terminal_scroll(void) {
         for (size_t y = 1; y < VGA_HEIGHT; ++y) {
-		char* source = (char*) (y * VGA_HEIGHT + VGA_BUFFER_BASE);
-		char* dest = (char*) ((y - 1) * VGA_HEIGHT + VGA_BUFFER_BASE);
+		char* source = (char*) (y * VGA_WIDTH * 2 + VGA_BUFFER_BASE);
+		char* dest = (char*) ((y - 1) * VGA_WIDTH * 2 + VGA_BUFFER_BASE);
 		memory_copy(source, dest, VGA_WIDTH * 2); //remember, char is 8 bits not 16 bits 
 	}
 	//blank last line
