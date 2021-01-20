@@ -1,6 +1,7 @@
 #include "terminal.h"
 #include "string.h"
 #include "ports.h" 
+#include "memory.h"
 #include <stdint.h>
 #include <stddef.h>
 #define VGA_COMMAND_PORT 0x3d4
@@ -52,22 +53,10 @@ void terminal_putentryat(char c, uint8_t color, size_t x, size_t y) {
 	const size_t index = y * VGA_WIDTH + x;
 	terminal_buffer[index] = vga_entry(c, color);
 }
-void terminal_scroll(size_t times) {
-        for (size_t i = 0;  i < times; ++i) {
-                for (size_t y = 1; y < VGA_HEIGHT; ++y) {
-                        for (size_t x = 0; x < VGA_WIDTH; ++x) {
-				const size_t from_index = y * VGA_WIDTH + x;
-				const size_t dest_index = (y - 1) * VGA_WIDTH + x;
-				terminal_buffer[dest_index] = terminal_buffer[from_index];
-			} 
-                }
-		for (size_t x = 0; x < VGA_WIDTH; ++x) {
-			const size_t index = (VGA_HEIGHT - (i + 1)) * VGA_WIDTH + x;
-			terminal_buffer[index] = vga_entry(' ', terminal_color); 
-		}
-        }
-	//change position
-	terminal_row = VGA_HEIGHT - times;
+void terminal_scroll(void) {
+        for (size_t y = 1; y < VGA_HEIGHT; ++y)
+		memory_copy((char*) (y * VGA_WIDTH + 0xb8000), (char*) ((y - 1) * VGA_WIDTH + 0xb8000), VGA_WIDTH);
+	terminal_row -= 1;
 	terminal_set_cursor_pos(terminal_column, terminal_row);
 }
 void terminal_putchar(char c) {
@@ -75,12 +64,15 @@ void terminal_putchar(char c) {
 		terminal_column = 0;
 	} else if (c == '\n') {
 		terminal_row += 1;
+		if (terminal_row == VGA_HEIGHT) {
+			terminal_scroll();
+		}
 	} else {
 		terminal_putentryat(c, terminal_color, terminal_column, terminal_row);
 		if (++terminal_column == VGA_WIDTH) {
 			terminal_column = 0;
 			if (++terminal_row == VGA_HEIGHT) {
-				terminal_scroll(1);
+				terminal_scroll();
 			}
 		}
 	}

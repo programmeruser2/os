@@ -28,7 +28,7 @@ size_t terminal_get_offset(void);
 void terminal_set_cursor_pos(size_t x, size_t y);
 void terminal_initialize(void);
 void terminal_setcolor(uint8_t color);
-void terminal_scroll(size_t times);
+void terminal_scroll(void);
 void terminal_putentry_at(char c, uint8_t color, size_t x, size_t y);
 void terminal_putchar(char c);
 void terminal_write(char* str, size_t size);
