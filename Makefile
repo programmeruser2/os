@@ -16,6 +16,6 @@ kernel.bin: $(OBJS)
 %.o: src/%.asm
 	nasm -f elf32 $< -o $@ 
 %.o: src/%.c
-	$(CC) -c $^ -nostdlib -ffreestanding -O2 -g # debug symbols 
+	$(CC) -c $^ -nostdlib -ffreestanding -O2 -lgcc -g # debug symbols 
 clean:
 	rm *.o
