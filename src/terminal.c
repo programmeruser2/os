@@ -6,6 +6,7 @@
 #include <stddef.h>
 #define VGA_COMMAND_PORT 0x3d4
 #define VGA_DATA_PORT 0x3d5
+#define VGA_BUFFER_BASE 0xb8000
 static uint8_t vga_entry_color(enum vga_color fg, enum vga_color bg) {
 	return fg | bg <<  4;
 }
@@ -36,7 +37,7 @@ void terminal_initialize(void) {
 	terminal_row = 0;
 	terminal_column = 0;
 	terminal_color = vga_entry_color(VGA_COLOR_LIGHT_GREY, VGA_COLOR_BLACK);
-	terminal_buffer = (uint16_t*) 0xb8000;
+	terminal_buffer = (uint16_t*) VGA_BUFFER_BASE;
 	for (size_t y = 0; y < VGA_HEIGHT; ++y) {
 		for (size_t x = 0; x < VGA_WIDTH; ++x) {
 			const size_t index = y * VGA_WIDTH + x;
@@ -54,8 +55,11 @@ void terminal_putentryat(char c, uint8_t color, size_t x, size_t y) {
 	terminal_buffer[index] = vga_entry(c, color);
 }
 void terminal_scroll(void) {
-        for (size_t y = 1; y < VGA_HEIGHT; ++y)
-		memory_copy((char*) (y * VGA_WIDTH + 0xb8000), (char*) ((y - 1) * VGA_WIDTH + 0xb8000), VGA_WIDTH);
+        for (size_t y = 1; y < VGA_HEIGHT; ++y) {
+		char* source = (char*) (y * VGA_HEIGHT + VGA_BUFFER_BASE);
+		char* dest = (char*) ((y - 1) * VGA_HEIGHT + VGA_BUFFER_BASE);
+		memory_copy(source, dest, VGA_WIDTH * 2); //remember, char is 8 bits not 16 bits 
+	}
 	//blank last line
 	for (size_t x = 0; x < VGA_WIDTH; ++x)
 		terminal_putentryat(' ', terminal_color, x, VGA_HEIGHT - 1);
