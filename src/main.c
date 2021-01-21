@@ -2,6 +2,7 @@
 #include "gdt.h"
 #include "idt.h"
 #include "timer.h"
+#include "paging.h"
 #include <stddef.h>
 void timer_callback(size_t tick) {
 	terminal_write_int((int) tick);
@@ -16,7 +17,9 @@ void kernel_main(void) {
 	//asm volatile("int $0x4");
 	//enable interrupts
 	asm volatile("sti");
-	terminal_write_line("Starting timer...");
-	timer_initialize(50, timer_callback); //initialize timer to 50 Hz
+	//terminal_write_line("Starting timer...");
+	//timer_initialize(50, timer_callback); //initialize timer to 50 Hz
+	paging_initialize();
+	terminal_write_line("Hello, paging world!");
 	for(;;) asm volatile("hlt");
 }
