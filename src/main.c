@@ -21,5 +21,7 @@ void kernel_main(void) {
 	//timer_initialize(50, timer_callback); //initialize timer to 50 Hz
 	paging_initialize();
 	terminal_write_line("Hello, paging world!");
+	int* ptr = (int*) 0xA0000000;
+	int fault = *ptr;
 	for(;;) asm volatile("hlt");
 }
