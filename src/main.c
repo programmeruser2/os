@@ -5,8 +5,8 @@
 #include "paging.h"
 #include <stddef.h>
 void timer_callback(size_t tick) {
-	terminal_write_int((int) tick);
-	terminal_write_line("");
+	//terminal_write_int((int) tick);
+	//terminal_write_line("");
 }
 void kernel_main(void) {
 	terminal_initialize();
@@ -21,7 +21,5 @@ void kernel_main(void) {
 	//timer_initialize(50, timer_callback); //initialize timer to 50 Hz
 	paging_initialize();
 	terminal_write_line("Hello, paging world!");
-	int* ptr = (int*) 0xA0000000;
-	int fault = *ptr;
 	for(;;) asm volatile("hlt");
 }
